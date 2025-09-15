@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Image from '../../../components/AppImage';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const MarketNews = () => {
+  const { t } = useLanguage();
   const [selectedTab, setSelectedTab] = useState('news');
 
   const mockNewsData = {
@@ -118,6 +120,19 @@ const MarketNews = () => {
       default: return 'bg-muted text-muted-foreground';
     }
   };
+  
+  const sentimentTranslations = {
+    bullish: t('bullish'),
+    bearish: t('bearish'),
+    neutral: t('neutral'),
+  };
+
+  const categoryTranslations = {
+    Market: t('newsCategoryMarket'),
+    Technology: t('newsCategoryTechnology'),
+    Adoption: t('newsCategoryAdoption'),
+    Regulation: t('newsCategoryRegulation'),
+  };
 
   const handleLike = (id) => {
     console.log('Liked post:', id);
@@ -136,7 +151,7 @@ const MarketNews = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">Market Feed</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('marketFeed')}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -148,8 +163,8 @@ const MarketNews = () => {
         {/* Tabs */}
         <div className="flex space-x-1">
           {[
-            { key: 'news', label: 'News', icon: 'Newspaper' },
-            { key: 'social', label: 'Social', icon: 'MessageSquare' }
+            { key: 'news', label: t('news'), icon: 'Newspaper' },
+            { key: 'social', label: t('social'), icon: 'MessageSquare' }
           ]?.map((tab) => (
             <button
               key={tab?.key}
@@ -188,10 +203,10 @@ const MarketNews = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(article?.category)}`}>
-                        {article?.category}
+                        {categoryTranslations[article?.category] || article?.category}
                       </span>
                       <span className={`text-xs font-medium ${getSentimentColor(article?.sentiment)}`}>
-                        {article?.sentiment?.toUpperCase()}
+                        {(sentimentTranslations[article?.sentiment] || article?.sentiment).toUpperCase()}
                       </span>
                     </div>
                     
@@ -245,7 +260,7 @@ const MarketNews = () => {
                     <div className="w-full h-32 rounded-lg overflow-hidden mt-3">
                       <Image
                         src={post?.image}
-                        alt="Post image"
+                        alt={t('postImageAlt')}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -306,7 +321,7 @@ const MarketNews = () => {
           iconPosition="right"
           onClick={() => window.location.href = '/social-trading-feed'}
         >
-          {selectedTab === 'news' ? 'View All News' : 'Join Social Feed'}
+          {selectedTab === 'news' ? t('viewAllNews') : t('joinSocialFeed')}
         </Button>
       </div>
     </div>

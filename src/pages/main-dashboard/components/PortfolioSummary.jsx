@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const PortfolioSummary = () => {
+  const { t } = useLanguage();
   const [timeframe, setTimeframe] = useState('24h');
 
   const mockPortfolioData = {
@@ -13,7 +15,7 @@ const PortfolioSummary = () => {
     positions: [
       {
         symbol: "BTCUSDT",
-        name: "Bitcoin",
+        name: t('bitcoin'),
         amount: "1.2345",
         value: "82,945.67",
         pnl: "+2,345.67",
@@ -23,7 +25,7 @@ const PortfolioSummary = () => {
       },
       {
         symbol: "ETHUSDT", 
-        name: "Ethereum",
+        name: t('ethereum'),
         amount: "8.7654",
         value: "30,289.45",
         pnl: "-456.78",
@@ -33,7 +35,7 @@ const PortfolioSummary = () => {
       },
       {
         symbol: "ADAUSDT",
-        name: "Cardano",
+        name: t('cardano'),
         amount: "15,432.1",
         value: "7,045.23",
         pnl: "+567.89",
@@ -43,7 +45,7 @@ const PortfolioSummary = () => {
       },
       {
         symbol: "SOLUSDT",
-        name: "Solana", 
+        name: t('solana'), 
         amount: "38.456",
         value: "5,566.97",
         pnl: "-123.45",
@@ -67,7 +69,7 @@ const PortfolioSummary = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">Portfolio</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('portfolio')}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -112,7 +114,7 @@ const PortfolioSummary = () => {
       {/* Performance Summary */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">P&L ({timeframe})</span>
+          <span className="text-sm text-muted-foreground">{t('pnl')} ({timeframe})</span>
           <div className="flex items-center space-x-2">
             <span className="text-success font-medium text-data">
               {currentPerformance?.pnl}
@@ -124,7 +126,7 @@ const PortfolioSummary = () => {
         </div>
         
         <div className="flex items-center justify-between mt-2">
-          <span className="text-sm text-muted-foreground">Available</span>
+          <span className="text-sm text-muted-foreground">{t('available')}</span>
           <span className="font-medium text-foreground text-data">
             ${mockPortfolioData?.availableBalance}
           </span>
@@ -133,7 +135,7 @@ const PortfolioSummary = () => {
       {/* Positions */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
-          <h4 className="text-sm font-medium text-foreground mb-3">Positions</h4>
+          <h4 className="text-sm font-medium text-foreground mb-3">{t('positions')}</h4>
           <div className="space-y-3">
             {mockPortfolioData?.positions?.map((position, index) => (
               <div
@@ -185,7 +187,7 @@ const PortfolioSummary = () => {
             iconName="Plus"
             iconPosition="left"
           >
-            Buy
+            {t('buy')}
           </Button>
           <Button
             variant="outline"
@@ -193,7 +195,7 @@ const PortfolioSummary = () => {
             iconName="Minus"
             iconPosition="left"
           >
-            Sell
+            {t('sell')}
           </Button>
         </div>
       </div>

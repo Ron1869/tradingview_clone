@@ -22,44 +22,44 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
   const [errors, setErrors] = useState({});
 
   const assetOptions = [
-    { value: 'BTCUSDT', label: 'Bitcoin (BTC/USDT)' },
-    { value: 'ETHUSDT', label: 'Ethereum (ETH/USDT)' },
-    { value: 'ADAUSDT', label: 'Cardano (ADA/USDT)' },
-    { value: 'SOLUSDT', label: 'Solana (SOL/USDT)' },
-    { value: 'DOTUSDT', label: 'Polkadot (DOT/USDT)' },
-    { value: 'LINKUSDT', label: 'Chainlink (LINK/USDT)' },
-    { value: 'MATICUSDT', label: 'Polygon (MATIC/USDT)' },
-    { value: 'AVAXUSDT', label: 'Avalanche (AVAX/USDT)' }
+    { value: 'BTCUSDT', label: 'Биткоин (BTC/USDT)' },
+    { value: 'ETHUSDT', label: 'Эфириум (ETH/USDT)' },
+    { value: 'ADAUSDT', label: 'Кардано (ADA/USDT)' },
+    { value: 'SOLUSDT', label: 'Солана (SOL/USDT)' },
+    { value: 'DOTUSDT', label: 'Полкадот (DOT/USDT)' },
+    { value: 'LINKUSDT', label: 'Чейнлинк (LINK/USDT)' },
+    { value: 'MATICUSDT', label: 'Полигон (MATIC/USDT)' },
+    { value: 'AVAXUSDT', label: 'Аваланч (AVAX/USDT)' }
   ];
 
   const alertTypeOptions = [
-    { value: 'price', label: 'Price Alert' },
-    { value: 'percentage', label: 'Percentage Change' },
-    { value: 'volume', label: 'Volume Spike' },
-    { value: 'technical', label: 'Technical Indicator' },
-    { value: 'custom', label: 'Custom Pine Script' }
+    { value: 'price', label: 'Ценовое уведомление' },
+    { value: 'percentage', label: 'Процентное изменение' },
+    { value: 'volume', label: 'Скачок объема' },
+    { value: 'technical', label: 'Технический индикатор' },
+    { value: 'custom', label: 'Пользовательский Pine Script' }
   ];
 
   const conditionOptions = {
     price: [
-      { value: 'above', label: 'Price Above' },
-      { value: 'below', label: 'Price Below' },
-      { value: 'crosses_above', label: 'Crosses Above' },
-      { value: 'crosses_below', label: 'Crosses Below' }
+      { value: 'above', label: 'Цена выше' },
+      { value: 'below', label: 'Цена ниже' },
+      { value: 'crosses_above', label: 'Пересекает вверх' },
+      { value: 'crosses_below', label: 'Пересекает вниз' }
     ],
     percentage: [
-      { value: 'increase', label: 'Increase by %' },
-      { value: 'decrease', label: 'Decrease by %' }
+      { value: 'increase', label: 'Увеличение на %' },
+      { value: 'decrease', label: 'Уменьшение на %' }
     ],
     volume: [
-      { value: 'spike', label: 'Volume Spike' },
-      { value: 'above_average', label: 'Above Average' }
+      { value: 'spike', label: 'Скачок объема' },
+      { value: 'above_average', label: 'Выше среднего' }
     ],
     technical: [
-      { value: 'rsi_overbought', label: 'RSI Overbought (>70)' },
-      { value: 'rsi_oversold', label: 'RSI Oversold (<30)' },
-      { value: 'macd_bullish', label: 'MACD Bullish Cross' },
-      { value: 'macd_bearish', label: 'MACD Bearish Cross' }
+      { value: 'rsi_overbought', label: 'RSI перекупленность (>70)' },
+      { value: 'rsi_oversold', label: 'RSI перепроданность (<30)' },
+      { value: 'macd_bullish', label: 'Бычье пересечение MACD' },
+      { value: 'macd_bearish', label: 'Медвежье пересечение MACD' }
     ]
   };
 
@@ -67,15 +67,15 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
     const newErrors = {};
     
     if (!alertData?.symbol) {
-      newErrors.symbol = 'Please select an asset';
+      newErrors.symbol = 'Пожалуйста, выберите актив';
     }
     
     if (alertData?.alertType === 'price' && !alertData?.value) {
-      newErrors.value = 'Please enter a price value';
+      newErrors.value = 'Пожалуйста, введите значение цены';
     }
     
     if (alertData?.alertType === 'percentage' && !alertData?.percentage) {
-      newErrors.percentage = 'Please enter a percentage value';
+      newErrors.percentage = 'Пожалуйста, введите процентное значение';
     }
 
     setErrors(newErrors);
@@ -137,7 +137,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
           iconPosition="left"
           className="w-full"
         >
-          Create New Alert
+          <span className="truncate">Создать новое уведомление</span>
         </Button>
       </div>
     );
@@ -146,7 +146,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
   return (
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-foreground">Create New Alert</h3>
+        <h3 className="text-lg font-semibold text-foreground">Создать уведомление</h3>
         <Button
           variant="ghost"
           size="sm"
@@ -157,8 +157,8 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Asset Selection */}
         <Select
-          label="Select Asset"
-          placeholder="Choose trading pair"
+          label="Выберите актив"
+          placeholder="Выберите торговую пару"
           options={assetOptions}
           value={alertData?.symbol}
           onChange={(value) => setAlertData(prev => ({ ...prev, symbol: value }))}
@@ -169,7 +169,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
 
         {/* Alert Type */}
         <Select
-          label="Alert Type"
+          label="Тип уведомления"
           options={alertTypeOptions}
           value={alertData?.alertType}
           onChange={(value) => setAlertData(prev => ({ 
@@ -182,7 +182,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
 
         {/* Condition */}
         <Select
-          label="Condition"
+          label="Условие"
           options={conditionOptions?.[alertData?.alertType] || conditionOptions?.price}
           value={alertData?.condition}
           onChange={(value) => setAlertData(prev => ({ ...prev, condition: value }))}
@@ -192,9 +192,9 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
         {/* Value Input */}
         {alertData?.alertType === 'price' && (
           <Input
-            label="Price Value"
+            label="Значение цены"
             type="number"
-            placeholder="Enter target price"
+            placeholder="Введите целевую цену"
             value={alertData?.value}
             onChange={(e) => setAlertData(prev => ({ ...prev, value: e?.target?.value }))}
             error={errors?.value}
@@ -204,9 +204,9 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
 
         {alertData?.alertType === 'percentage' && (
           <Input
-            label="Percentage Value"
+            label="Процентное значение"
             type="number"
-            placeholder="Enter percentage (e.g., 5)"
+            placeholder="Введите процент (например, 5)"
             value={alertData?.percentage}
             onChange={(e) => setAlertData(prev => ({ ...prev, percentage: e?.target?.value }))}
             error={errors?.percentage}
@@ -216,20 +216,20 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
 
         {/* Notification Preferences */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">Notification Methods</label>
+          <label className="text-sm font-medium text-foreground">Способы уведомления</label>
           <div className="space-y-2">
             <Checkbox
-              label="Push Notifications"
+              label="Push-уведомления"
               checked={alertData?.notifications?.push}
               onChange={(e) => handleNotificationChange('push', e?.target?.checked)}
             />
             <Checkbox
-              label="Email Notifications"
+              label="Email-уведомления"
               checked={alertData?.notifications?.email}
               onChange={(e) => handleNotificationChange('email', e?.target?.checked)}
             />
             <Checkbox
-              label="SMS Notifications"
+              label="SMS-уведомления"
               checked={alertData?.notifications?.sms}
               onChange={(e) => handleNotificationChange('sms', e?.target?.checked)}
             />
@@ -237,7 +237,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex space-x-3 pt-4">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-4">
           <Button
             type="submit"
             variant="default"
@@ -245,7 +245,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
             iconPosition="left"
             className="flex-1"
           >
-            Create Alert
+            <span className="truncate">Создать уведомление</span>
           </Button>
           <Button
             type="button"
@@ -253,7 +253,7 @@ const AlertCreationPanel = ({ onCreateAlert, isOpen, onToggle }) => {
             onClick={onToggle}
             className="flex-1"
           >
-            Cancel
+            <span className="truncate">Отмена</span>
           </Button>
         </div>
       </form>

@@ -3,8 +3,10 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const TradingPanel = ({ selectedSymbol, currentPrice }) => {
+  const { t } = useLanguage();
   const [orderType, setOrderType] = useState('market');
   const [side, setSide] = useState('buy');
   const [quantity, setQuantity] = useState('');
@@ -17,13 +19,12 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
   const [balance, setBalance] = useState(50000);
 
   const orderTypeOptions = [
-    { value: 'market', label: 'Рыночный' },
-    { value: 'limit', label: 'Лимитный' },
-    { value: 'stop', label: 'Стоп' },
-    { value: 'stop-limit', label: 'Стоп-лимит' }
+    { value: 'market', label: t('market') },
+    { value: 'limit', label: t('limit') },
+    { value: 'stop', label: t('stop') },
+    { value: 'stop-limit', label: t('stopLimit') }
   ];
 
-  // Mock positions and orders
   useEffect(() => {
     const mockPositions = [
       {
@@ -91,7 +92,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
     const orderValue = orderPrice * orderQuantity;
 
     if (side === 'buy' && orderValue > balance) {
-      alert('Недостаточно средств для выполнения ордера');
+      alert(t('alertInsufficientFunds'));
       return;
     }
 
@@ -109,14 +110,12 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
     setOrders([newOrder, ...orders]);
     
     if (orderType === 'market') {
-      // Update balance
       if (side === 'buy') {
         setBalance(balance - orderValue);
       } else {
         setBalance(balance + orderValue);
       }
       
-      // Clear form
       setQuantity('');
       setPrice('');
       setStopLoss('');
@@ -134,7 +133,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
   };
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('ru-RU', {
+    return new Intl.NumberFormat(t('locale'), {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2
@@ -142,7 +141,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
   };
 
   const formatDateTime = (date) => {
-    return date?.toLocaleString('ru-RU', {
+    return date?.toLocaleString(t('locale'), {
       day: '2-digit',
       month: '2-digit',
       hour: '2-digit',
@@ -155,9 +154,9 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-foreground">Торговля</h2>
+          <h2 className="text-lg font-semibold text-foreground">{t('trading')}</h2>
           <div className="text-sm">
-            <span className="text-muted-foreground">Баланс: </span>
+            <span className="text-muted-foreground">{t('balanceLabel')} </span>
             <span className="font-medium text-foreground text-data">{formatCurrency(balance)}</span>
           </div>
         </div>
@@ -170,7 +169,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
               activeTab === 'order' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Ордер
+            {t('order')}
           </button>
           <button
             onClick={() => setActiveTab('positions')}
@@ -178,7 +177,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
               activeTab === 'positions' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Позиции
+            {t('positions')}
           </button>
           <button
             onClick={() => setActiveTab('orders')}
@@ -186,7 +185,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
               activeTab === 'orders' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Ордера
+            {t('orders')}
           </button>
         </div>
       </div>
@@ -210,7 +209,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                   side === 'buy' ?'bg-success text-white shadow-sm' :'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Купить
+                {t('buy')}
               </button>
               <button
                 onClick={() => setSide('sell')}
@@ -218,13 +217,13 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                   side === 'sell' ?'bg-error text-white shadow-sm' :'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Продать
+                {t('sell')}
               </button>
             </div>
 
             {/* Order Type */}
             <Select
-              label="Тип ордера"
+              label={t('orderType')}
               options={orderTypeOptions}
               value={orderType}
               onChange={setOrderType}
@@ -232,7 +231,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
 
             {/* Quantity */}
             <Input
-              label="Количество"
+              label={t('quantity')}
               type="number"
               placeholder="0.00"
               value={quantity}
@@ -244,7 +243,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
             {/* Price (for limit orders) */}
             {orderType !== 'market' && (
               <Input
-                label="Цена"
+                label={t('price')}
                 type="number"
                 placeholder="0.00"
                 value={price}
@@ -257,7 +256,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
             {/* Advanced Options */}
             <div className="space-y-3">
               <Input
-                label="Стоп-лосс (опционально)"
+                label={t('stopLossOptional')}
                 type="number"
                 placeholder="0.00"
                 value={stopLoss}
@@ -267,7 +266,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
               />
               
               <Input
-                label="Тейк-профит (опционально)"
+                label={t('takeProfitOptional')}
                 type="number"
                 placeholder="0.00"
                 value={takeProfit}
@@ -281,19 +280,19 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
             {quantity && price && (
               <div className="bg-muted rounded-lg p-3 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Сумма ордера:</span>
+                  <span className="text-muted-foreground">{t('orderAmount')}</span>
                   <span className="font-medium text-foreground text-data">
                     {formatCurrency(calculateOrderValue())}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Комиссия (0.1%):</span>
+                  <span className="text-muted-foreground">{t('feeLabel')}</span>
                   <span className="font-medium text-foreground text-data">
                     {formatCurrency(calculateOrderValue() * 0.001)}
                   </span>
                 </div>
                 <div className="border-t border-border pt-2 flex justify-between">
-                  <span className="text-muted-foreground">Итого:</span>
+                  <span className="text-muted-foreground">{t('totalLabel')}</span>
                   <span className="font-medium text-foreground text-data">
                     {formatCurrency(calculateOrderValue() * 1.001)}
                   </span>
@@ -308,7 +307,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
               onClick={handleSubmitOrder}
               disabled={!quantity || (orderType !== 'market' && !price)}
             >
-              {side === 'buy' ? 'Купить' : 'Продать'} {selectedSymbol}
+              {t(side === 'buy' ? 'buy' : 'sell')} {selectedSymbol}
             </Button>
           </div>
         )}
@@ -317,7 +316,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
           <div className="space-y-3">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-muted-foreground">
-                Открытые позиции ({positions?.length})
+                {t('openPositions')} ({positions?.length})
               </h3>
               <Button variant="ghost" size="sm">
                 <Icon name="Settings" size={16} />
@@ -333,7 +332,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                       <span className={`text-xs px-2 py-1 rounded ${
                         position?.side === 'long' ?'bg-success/20 text-success' :'bg-error/20 text-error'
                       }`}>
-                        {position?.side === 'long' ? 'LONG' : 'SHORT'}
+                        {t(position?.side === 'long' ? 'sideLong' : 'sideShort')}
                       </span>
                     </div>
                     <Button variant="ghost" size="sm">
@@ -343,19 +342,19 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                   
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Размер:</span>
+                      <span className="text-muted-foreground">{t('sizeLabel')}</span>
                       <div className="font-medium text-foreground text-data">{position?.size}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Вход:</span>
+                      <span className="text-muted-foreground">{t('entryLabel')}</span>
                       <div className="font-medium text-foreground text-data">{formatCurrency(position?.entryPrice)}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Текущая:</span>
+                      <span className="text-muted-foreground">{t('currentLabel')}</span>
                       <div className="font-medium text-foreground text-data">{formatCurrency(position?.currentPrice)}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">P&L:</span>
+                      <span className="text-muted-foreground">{t('pnlLabel')}</span>
                       <div className={`font-medium text-data ${getPositionPnlColor(position?.pnl)}`}>
                         {formatCurrency(position?.pnl)} ({position?.pnlPercent > 0 ? '+' : ''}{position?.pnlPercent?.toFixed(2)}%)
                       </div>
@@ -364,10 +363,10 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                   
                   <div className="flex space-x-2 pt-2">
                     <Button variant="outline" size="sm" className="flex-1">
-                      Изменить
+                      {t('modify')}
                     </Button>
                     <Button variant="destructive" size="sm" className="flex-1">
-                      Закрыть
+                      {t('close')}
                     </Button>
                   </div>
                 </div>
@@ -375,7 +374,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
             ) : (
               <div className="text-center py-8">
                 <Icon name="TrendingUp" size={48} className="text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">Нет открытых позиций</p>
+                <p className="text-muted-foreground">{t('noOpenPositions')}</p>
               </div>
             )}
           </div>
@@ -385,7 +384,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
           <div className="space-y-3">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-muted-foreground">
-                Активные ордера ({orders?.filter(o => o?.status === 'pending')?.length})
+                {t('activeOrders')} ({orders?.filter(o => o?.status === 'pending')?.length})
               </h3>
               <Button variant="ghost" size="sm">
                 <Icon name="RefreshCw" size={16} />
@@ -407,7 +406,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                         order?.status === 'filled' ?'bg-success/20 text-success' 
                           : order?.status === 'pending' ?'bg-warning/20 text-warning' :'bg-error/20 text-error'
                       }`}>
-                        {order?.status === 'filled' ? 'ИСПОЛНЕН' : order?.status === 'pending' ? 'ОЖИДАЕТ' : 'ОТМЕНЕН'}
+                        {t(order?.status === 'filled' ? 'statusFilled' : order?.status === 'pending' ? 'statusPending' : 'statusCancelled')}
                       </span>
                     </div>
                     {order?.status === 'pending' && (
@@ -419,19 +418,19 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
                   
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Тип:</span>
+                      <span className="text-muted-foreground">{t('typeLabel')}</span>
                       <div className="font-medium text-foreground">{order?.type}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Количество:</span>
+                      <span className="text-muted-foreground">{t('quantity')}</span>
                       <div className="font-medium text-foreground text-data">{order?.quantity}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Цена:</span>
+                      <span className="text-muted-foreground">{t('price')}</span>
                       <div className="font-medium text-foreground text-data">{formatCurrency(order?.price)}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Создан:</span>
+                      <span className="text-muted-foreground">{t('createdLabel')}</span>
                       <div className="font-medium text-foreground text-data">{formatDateTime(order?.created)}</div>
                     </div>
                   </div>
@@ -440,7 +439,7 @@ const TradingPanel = ({ selectedSymbol, currentPrice }) => {
             ) : (
               <div className="text-center py-8">
                 <Icon name="FileText" size={48} className="text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">Нет активных ордеров</p>
+                <p className="text-muted-foreground">{t('noActiveOrders')}</p>
               </div>
             )}
           </div>

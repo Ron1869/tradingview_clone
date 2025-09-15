@@ -6,8 +6,10 @@ import SymbolSidebar from './components/SymbolSidebar';
 import TradingPanel from './components/TradingPanel';
 import ChartControls from './components/ChartControls';
 import MarketDepth from './components/MarketDepth';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const AdvancedChart = () => {
+  const { t } = useLanguage();
   const [selectedSymbol, setSelectedSymbol] = useState('BTCUSD');
   const [currentPrice, setCurrentPrice] = useState(45234.56);
   const [timeframe, setTimeframe] = useState('1h');
@@ -43,8 +45,7 @@ const AdvancedChart = () => {
   };
 
   const handleScreenshot = () => {
-    // Mock screenshot functionality
-    alert('Скриншот графика сохранен в загрузки');
+    alert(t('alertScreenshotSaved'));
   };
 
   const handlePineScript = () => {
@@ -58,8 +59,8 @@ const AdvancedChart = () => {
   return (
     <>
       <Helmet>
-        <title>Продвинутые графики - TradingView</title>
-        <meta name="description" content="Профессиональные торговые графики с техническим анализом, индикаторами и инструментами рисования для трейдеров" />
+        <title>{t('advancedChartsTitle')}</title>
+        <meta name="description" content={t('advancedChartsDescription')} />
       </Helmet>
       <div className="min-h-screen bg-background">
         <Header />
@@ -125,7 +126,7 @@ const AdvancedChart = () => {
           <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-card border border-border rounded-lg w-full max-w-4xl h-[80vh] flex flex-col">
               <div className="flex items-center justify-between p-4 border-b border-border">
-                <h2 className="text-lg font-semibold text-foreground">Pine Script Editor</h2>
+                <h2 className="text-lg font-semibold text-foreground">{t('pineScriptEditor')}</h2>
                 <button
                   onClick={() => setShowPineScript(false)}
                   className="text-muted-foreground hover:text-foreground"
@@ -140,26 +141,26 @@ const AdvancedChart = () => {
                 <div className="bg-input border border-border rounded-lg h-full p-4">
                   <pre className="text-sm text-foreground font-mono">
 {`//@version=5
-indicator("Пользовательский индикатор", shorttitle="Custom", overlay=true)
+indicator("${t('pineCustomIndicator')}", shorttitle="Custom", overlay=true)
 
-// Параметры
-length = input.int(20, title="Период MA")
-source = input(close, title="Источник")
+// ${t('parameters')}
+length = input.int(20, title="${t('pineMaPeriod')}")
+source = input(close, title="${t('pineSource')}")
 
-// Расчет скользящей средней
+// ${t('calculationOfMa')}
 ma = ta.sma(source, length)
 
-// Отображение на графике
+// ${t('displayOnChart')}
 plot(ma, color=color.blue, linewidth=2, title="MA")
 
-// Сигналы
+// ${t('signals')}
 bullish = ta.crossover(close, ma)
 bearish = ta.crossunder(close, ma)
 
 plotshape(bullish, style=shape.triangleup, location=location.belowbar, 
-          color=color.green, size=size.small, title="Покупка")
+          color=color.green, size=size.small, title="${t('pineBuySignal')}")
 plotshape(bearish, style=shape.triangledown, location=location.abovebar, 
-          color=color.red, size=size.small, title="Продажа")`}
+          color=color.red, size=size.small, title="${t('pineSellSignal')}")`}
                   </pre>
                 </div>
               </div>
@@ -167,14 +168,14 @@ plotshape(bearish, style=shape.triangledown, location=location.abovebar,
               <div className="p-4 border-t border-border">
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-muted-foreground">
-                    Pine Script v5 - Создайте собственные индикаторы и стратегии
+                    {t('pineCreateStrategies')}
                   </div>
                   <div className="flex space-x-2">
                     <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
-                      Применить
+                      {t('apply')}
                     </button>
                     <button className="px-4 py-2 bg-muted text-foreground rounded-md text-sm font-medium hover:bg-muted/80 transition-colors">
-                      Сохранить
+                      {t('save')}
                     </button>
                   </div>
                 </div>
@@ -189,7 +190,7 @@ plotshape(bearish, style=shape.triangledown, location=location.abovebar,
             <div>
               <div className="text-sm font-medium text-foreground text-data">{selectedSymbol}</div>
               <div className="text-xs text-muted-foreground">
-                {new Intl.NumberFormat('ru-RU', {
+                {new Intl.NumberFormat(t('locale'), {
                   style: 'currency',
                   currency: 'USD'
                 })?.format(currentPrice)}
@@ -197,10 +198,10 @@ plotshape(bearish, style=shape.triangledown, location=location.abovebar,
             </div>
             <div className="flex space-x-2">
               <button className="px-4 py-2 bg-success text-white rounded-md text-sm font-medium">
-                Купить
+                {t('buy')}
               </button>
               <button className="px-4 py-2 bg-error text-white rounded-md text-sm font-medium">
-                Продать
+                {t('sell')}
               </button>
             </div>
           </div>

@@ -3,8 +3,10 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const TradingPanel = () => {
+  const { t } = useLanguage();
   const [orderType, setOrderType] = useState('market');
   const [side, setSide] = useState('buy');
   const [quantity, setQuantity] = useState('');
@@ -14,10 +16,10 @@ const TradingPanel = () => {
   const [selectedSymbol, setSelectedSymbol] = useState('BTCUSDT');
 
   const orderTypeOptions = [
-    { value: 'market', label: 'Market' },
-    { value: 'limit', label: 'Limit' },
-    { value: 'stop', label: 'Stop' },
-    { value: 'stop_limit', label: 'Stop Limit' }
+    { value: 'market', label: t('market') },
+    { value: 'limit', label: t('limit') },
+    { value: 'stop', label: t('stop') },
+    { value: 'stop_limit', label: t('stopLimit') }
   ];
 
   const symbolOptions = [
@@ -37,12 +39,12 @@ const TradingPanel = () => {
 
   const handlePlaceOrder = () => {
     if (!quantity) {
-      alert('Please enter quantity');
+      alert(t('alertEnterQuantity'));
       return;
     }
     
     if (orderType === 'limit' && !price) {
-      alert('Please enter price for limit order');
+      alert(t('alertEnterPriceLimit'));
       return;
     }
 
@@ -58,7 +60,7 @@ const TradingPanel = () => {
     };
 
     console.log('Placing order:', orderData);
-    alert(`${side?.toUpperCase()} order placed successfully!`);
+    alert(`${side?.toUpperCase()} ${t('alertOrderPlaced')}`);
     
     // Reset form
     setQuantity('');
@@ -91,7 +93,7 @@ const TradingPanel = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">Quick Trade</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('quickTrade')}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -116,7 +118,7 @@ const TradingPanel = () => {
               side === 'buy' ?'bg-success text-white' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Buy
+            {t('buy')}
           </button>
           <button
             onClick={() => setSide('sell')}
@@ -124,7 +126,7 @@ const TradingPanel = () => {
               side === 'sell' ?'bg-error text-white' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Sell
+            {t('sell')}
           </button>
         </div>
       </div>
@@ -132,7 +134,7 @@ const TradingPanel = () => {
       <div className="flex-1 p-4 space-y-4">
         {/* Order Type */}
         <Select
-          label="Order Type"
+          label={t('orderType')}
           options={orderTypeOptions}
           value={orderType}
           onChange={setOrderType}
@@ -141,9 +143,9 @@ const TradingPanel = () => {
         {/* Price (for limit orders) */}
         {(orderType === 'limit' || orderType === 'stop_limit') && (
           <Input
-            label="Price (USDT)"
+            label={`${t('price')} (USDT)`}
             type="number"
-            placeholder="Enter price"
+            placeholder={t('enterPrice')}
             value={price}
             onChange={(e) => setPrice(e?.target?.value)}
           />
@@ -152,19 +154,19 @@ const TradingPanel = () => {
         {/* Quantity */}
         <div>
           <Input
-            label="Quantity (BTC)"
+            label={`${t('quantity')} (BTC)`}
             type="number"
-            placeholder="Enter quantity"
+            placeholder={t('enterQuantity')}
             value={quantity}
             onChange={(e) => setQuantity(e?.target?.value)}
           />
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-            <span>Max: {getMaxQuantity()}</span>
+            <span>{t('max')}: {getMaxQuantity()}</span>
             <button
               onClick={() => setQuantity(getMaxQuantity())}
               className="text-primary hover:text-primary/80 transition-smooth"
             >
-              Use Max
+              {t('useMax')}
             </button>
           </div>
         </div>
@@ -172,17 +174,17 @@ const TradingPanel = () => {
         {/* Advanced Options */}
         <div className="space-y-3">
           <Input
-            label="Stop Loss (Optional)"
+            label={t('stopLossOptional')}
             type="number"
-            placeholder="Stop loss price"
+            placeholder={t('stopLossPrice')}
             value={stopLoss}
             onChange={(e) => setStopLoss(e?.target?.value)}
           />
           
           <Input
-            label="Take Profit (Optional)"
+            label={t('takeProfitOptional')}
             type="number"
-            placeholder="Take profit price"
+            placeholder={t('takeProfitPrice')}
             value={takeProfit}
             onChange={(e) => setTakeProfit(e?.target?.value)}
           />
@@ -191,19 +193,19 @@ const TradingPanel = () => {
         {/* Order Summary */}
         <div className="bg-muted/30 rounded-lg p-3 space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Order Value:</span>
+            <span className="text-muted-foreground">{t('orderValue')}:</span>
             <span className="font-medium text-foreground text-data">
               ${calculateOrderValue()} USDT
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Est. Fee:</span>
+            <span className="text-muted-foreground">{t('estFee')}:</span>
             <span className="font-medium text-foreground text-data">
               ${(parseFloat(calculateOrderValue()?.replace(',', '')) * 0.001)?.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Available:</span>
+            <span className="text-muted-foreground">{t('available')}:</span>
             <span className="font-medium text-foreground text-data">
               ${mockAccountData?.availableBalance} USDT
             </span>
@@ -220,17 +222,17 @@ const TradingPanel = () => {
           disabled={!quantity}
           className="font-semibold"
         >
-          {side === 'buy' ? 'Buy' : 'Sell'} {selectedSymbol?.replace('USDT', '')}
+          {side === 'buy' ? t('buySymbol') : t('sellSymbol')} {selectedSymbol?.replace('USDT', '')}
         </Button>
         
         <div className="flex items-center justify-center mt-3 space-x-4 text-xs text-muted-foreground">
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Connected</span>
+            <span>{t('connected')}</span>
           </div>
           <div className="flex items-center space-x-1">
             <Icon name="Shield" size={12} />
-            <span>Secure</span>
+            <span>{t('secure')}</span>
           </div>
         </div>
       </div>

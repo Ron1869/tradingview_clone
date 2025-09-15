@@ -8,38 +8,38 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
   const [isExpanded, setIsExpanded] = useState(true);
 
   const assetClassOptions = [
-    { value: 'all', label: 'All Assets' },
-    { value: 'stocks', label: 'Stocks' },
-    { value: 'crypto', label: 'Cryptocurrency' },
-    { value: 'forex', label: 'Forex' },
-    { value: 'commodities', label: 'Commodities' },
-    { value: 'indices', label: 'Indices' }
+    { value: 'all', label: 'Все активы' },
+    { value: 'stocks', label: 'Акции' },
+    { value: 'crypto', label: 'Криптовалюта' },
+    { value: 'forex', label: 'Форекс' },
+    { value: 'commodities', label: 'Товары' },
+    { value: 'indices', label: 'Индексы' }
   ];
 
   const marketCapOptions = [
-    { value: 'all', label: 'All Market Caps' },
-    { value: 'mega', label: 'Mega Cap (>$200B)' },
-    { value: 'large', label: 'Large Cap ($10B-$200B)' },
-    { value: 'mid', label: 'Mid Cap ($2B-$10B)' },
-    { value: 'small', label: 'Small Cap ($300M-$2B)' },
-    { value: 'micro', label: 'Micro Cap (<$300M)' }
+    { value: 'all', label: 'Любая капитализация' },
+    { value: 'mega', label: 'Мега (>200 млрд $)' },
+    { value: 'large', label: 'Крупная (10-200 млрд $)' },
+    { value: 'mid', label: 'Средняя (2-10 млрд $)' },
+    { value: 'small', label: 'Малая (300 млн - 2 млрд $)' },
+    { value: 'micro', label: 'Микро (<300 млн $)' }
   ];
 
   const technicalPatternOptions = [
-    { value: 'all', label: 'All Patterns' },
-    { value: 'breakout', label: 'Breakout' },
-    { value: 'reversal', label: 'Reversal' },
-    { value: 'continuation', label: 'Continuation' },
-    { value: 'flag', label: 'Flag Pattern' },
-    { value: 'triangle', label: 'Triangle' },
-    { value: 'head_shoulders', label: 'Head & Shoulders' }
+    { value: 'all', label: 'Все паттерны' },
+    { value: 'breakout', label: 'Пробой' },
+    { value: 'reversal', label: 'Разворот' },
+    { value: 'continuation', label: 'Продолжение' },
+    { value: 'flag', label: 'Флаг' },
+    { value: 'triangle', label: 'Треугольник' },
+    { value: 'head_shoulders', label: 'Голова и плечи' }
   ];
 
   const volumeOptions = [
-    { value: 'all', label: 'All Volume' },
-    { value: 'high', label: 'High Volume (>2x avg)' },
-    { value: 'above_avg', label: 'Above Average (>1.5x avg)' },
-    { value: 'unusual', label: 'Unusual Volume (>3x avg)' }
+    { value: 'all', label: 'Любой объем' },
+    { value: 'high', label: 'Высокий (>2x сред.)' },
+    { value: 'above_avg', label: 'Выше среднего (>1.5x сред.)' },
+    { value: 'unusual', label: 'Необычный (>3x сред.)' }
   ];
 
   const handleFilterChange = (key, value) => {
@@ -52,7 +52,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
   return (
     <div className="bg-card border border-border rounded-lg">
       <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="text-lg font-semibold text-foreground">Market Scanner Filters</h3>
+        <h3 className="text-lg font-semibold text-foreground">Фильтры сканера рынка</h3>
         <Button
           variant="ghost"
           size="sm"
@@ -65,35 +65,35 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
         <div className="p-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Select
-              label="Asset Class"
+              label="Класс активов"
               options={assetClassOptions}
               value={filters?.assetClass}
               onChange={(value) => handleFilterChange('assetClass', value)}
             />
 
             <Select
-              label="Market Cap"
+              label="Капитализация"
               options={marketCapOptions}
               value={filters?.marketCap}
               onChange={(value) => handleFilterChange('marketCap', value)}
             />
 
             <Select
-              label="Technical Pattern"
+              label="Технический паттерн"
               options={technicalPatternOptions}
               value={filters?.technicalPattern}
               onChange={(value) => handleFilterChange('technicalPattern', value)}
             />
 
             <Select
-              label="Volume Filter"
+              label="Фильтр по объему"
               options={volumeOptions}
               value={filters?.volume}
               onChange={(value) => handleFilterChange('volume', value)}
             />
 
             <Input
-              label="Min Price ($)"
+              label="Мин. цена ($)"
               type="number"
               placeholder="0.00"
               value={filters?.minPrice}
@@ -101,7 +101,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
             />
 
             <Input
-              label="Max Price ($)"
+              label="Макс. цена ($)"
               type="number"
               placeholder="1000.00"
               value={filters?.maxPrice}
@@ -111,7 +111,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Min Change %"
+              label="Мин. изменение %"
               type="number"
               placeholder="-10"
               value={filters?.minChange}
@@ -119,7 +119,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
             />
 
             <Input
-              label="Max Change %"
+              label="Макс. изменение %"
               type="number"
               placeholder="10"
               value={filters?.maxChange}
@@ -129,7 +129,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
 
           <div className="flex items-center justify-between pt-4 border-t border-border">
             <div className="text-sm text-muted-foreground">
-              {filters?.resultsCount || 0} assets match current filters
+              {filters?.resultsCount || 0} активов соответствует фильтрам
             </div>
             <div className="flex space-x-2">
               <Button
@@ -137,7 +137,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
                 size="sm"
                 onClick={onResetFilters}
               >
-                Reset Filters
+                Сбросить
               </Button>
               <Button
                 variant="default"
@@ -146,7 +146,7 @@ const FilterPanel = ({ filters, onFiltersChange, onApplyFilters, onResetFilters 
                 iconName="Search"
                 iconPosition="left"
               >
-                Apply Filters
+                Применить
               </Button>
             </div>
           </div>

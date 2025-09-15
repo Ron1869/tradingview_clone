@@ -1,10 +1,13 @@
 import React from 'react';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import Icon from '../../../components/AppIcon';
 import MarketPredictionCard from './MarketPredictionCard';
 
 const ChatMessage = ({ message }) => {
+  const { t, locale } = useLanguage();
+
   const formatTimestamp = (timestamp) => {
-    return new Date(timestamp)?.toLocaleTimeString('ru-RU', {
+    return new Date(timestamp)?.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit'
     });
@@ -21,14 +24,14 @@ const ChatMessage = ({ message }) => {
         {message?.confidence && (
           <div className="flex items-center space-x-2 text-xs text-muted-foreground">
             <Icon name="TrendingUp" size={12} />
-            <span>Уверенность: {Math.round(message?.confidence * 100)}%</span>
+            <span>{t('confidence', { confidence: Math.round(message?.confidence * 100) })}</span>
           </div>
         )}
         {message?.keyInsights && message?.keyInsights?.length > 0 && (
           <div className="bg-muted/50 rounded-lg p-3">
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center">
               <Icon name="Lightbulb" size={14} className="mr-1" />
-              Ключевые выводы
+              {t('keyInsights')}
             </h4>
             <ul className="text-xs text-muted-foreground space-y-1">
               {message?.keyInsights?.map((insight, index) => (
@@ -44,7 +47,7 @@ const ChatMessage = ({ message }) => {
           <div className="bg-primary/10 rounded-lg p-3">
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center">
               <Icon name="Target" size={14} className="mr-1" />
-              Рекомендации
+              {t('recommendations')}
             </h4>
             <ul className="text-xs text-muted-foreground space-y-1">
               {message?.recommendations?.map((rec, index) => (
@@ -60,7 +63,7 @@ const ChatMessage = ({ message }) => {
           <div className="bg-warning/10 rounded-lg p-3">
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center">
               <Icon name="AlertTriangle" size={14} className="mr-1" />
-              Факторы риска
+              {t('riskFactors')}
             </h4>
             <ul className="text-xs text-muted-foreground space-y-1">
               {message?.riskFactors?.map((risk, index) => (

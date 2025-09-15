@@ -30,7 +30,7 @@ const MarketScanner = () => {
   const [scanHistory] = useState([
     {
       id: 1,
-      name: 'High Volume Breakouts',
+      name: 'Прорывы с высоким объемом',
       timestamp: Date.now() - 86400000, // 1 day ago
       resultsCount: 23,
       avgPerformance: 3.2,
@@ -38,7 +38,7 @@ const MarketScanner = () => {
     },
     {
       id: 2,
-      name: 'Oversold Bounce',
+      name: 'Отскок от перепроданности',
       timestamp: Date.now() - 172800000, // 2 days ago
       resultsCount: 15,
       avgPerformance: -1.8,
@@ -46,7 +46,7 @@ const MarketScanner = () => {
     },
     {
       id: 3,
-      name: 'Momentum Stocks',
+      name: 'Акции с импульсом',
       timestamp: Date.now() - 259200000, // 3 days ago
       resultsCount: 31,
       avgPerformance: 5.7,
@@ -278,8 +278,8 @@ const MarketScanner = () => {
   return (
     <>
       <Helmet>
-        <title>Market Scanner - TradingView Clone</title>
-        <meta name="description" content="Powerful market scanning tools to identify trading opportunities across multiple asset classes with real-time filtering and analysis." />
+        <title>Сканер Рынка - Клон TradingView</title>
+        <meta name="description" content="Мощные инструменты сканирования рынка для определения торговых возможностей по различным классам активов с фильтрацией и анализом в реальном времени." />
       </Helmet>
       <div className="min-h-screen bg-background">
         <Header />
@@ -290,9 +290,9 @@ const MarketScanner = () => {
             <div className="mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-2xl font-bold text-foreground">Market Scanner</h1>
+                  <h1 className="text-2xl font-bold text-foreground">Сканер Рынка</h1>
                   <p className="text-muted-foreground mt-1">
-                    Discover trading opportunities with powerful screening tools
+                    Находите торговые возможности с помощью мощных инструментов сканирования
                   </p>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -301,12 +301,12 @@ const MarketScanner = () => {
                       <div className="animate-spin">
                         <Icon name="Loader2" size={16} />
                       </div>
-                      <span className="text-sm font-medium">Scanning...</span>
+                      <span className="text-sm font-medium">Сканирование...</span>
                     </div>
                   )}
                   {lastScanTime && (
                     <div className="text-sm text-muted-foreground">
-                      Last scan: {lastScanTime?.toLocaleTimeString()}
+                      Последнее сканирование: {lastScanTime?.toLocaleTimeString()}
                     </div>
                   )}
                   <Button
@@ -316,7 +316,7 @@ const MarketScanner = () => {
                     iconName="Search"
                     iconPosition="left"
                   >
-                    {isScanning ? 'Scanning...' : 'Run Scan'}
+                    {isScanning ? 'Сканирование...' : 'Запустить сканирование'}
                   </Button>
                 </div>
               </div>
@@ -363,25 +363,25 @@ const MarketScanner = () => {
                   <div className="text-2xl font-bold text-success">
                     {scanResults?.filter(r => parseFloat(r?.change?.replace('%', '')) > 0)?.length}
                   </div>
-                  <div className="text-sm text-muted-foreground">Gainers</div>
+                  <div className="text-sm text-muted-foreground">Растущие</div>
                 </div>
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="text-2xl font-bold text-error">
                     {scanResults?.filter(r => parseFloat(r?.change?.replace('%', '')) < 0)?.length}
                   </div>
-                  <div className="text-sm text-muted-foreground">Losers</div>
+                  <div className="text-sm text-muted-foreground">Падающие</div>
                 </div>
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="text-2xl font-bold text-warning">
                     {scanResults?.filter(r => r?.rsi > 70)?.length}
                   </div>
-                  <div className="text-sm text-muted-foreground">Overbought</div>
+                  <div className="text-sm text-muted-foreground">Перекупленные</div>
                 </div>
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="text-2xl font-bold text-primary">
                     {scanResults?.filter(r => r?.rsi < 30)?.length}
                   </div>
-                  <div className="text-sm text-muted-foreground">Oversold</div>
+                  <div className="text-sm text-muted-foreground">Перепроданные</div>
                 </div>
               </div>
             )}

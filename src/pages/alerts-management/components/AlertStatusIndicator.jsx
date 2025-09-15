@@ -41,26 +41,26 @@ const AlertStatusIndicator = ({ totalAlerts, activeAlerts, triggeredToday }) => 
     const now = new Date();
     const diff = Math.floor((now - lastUpdate) / 1000);
     
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60) return `${diff}с назад`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}м назад`;
+    return `${Math.floor(diff / 3600)}ч назад`;
   };
 
   const stats = [
     {
-      label: 'Total Alerts',
+      label: 'Всего',
       value: totalAlerts,
       icon: 'Bell',
       color: 'text-foreground'
     },
     {
-      label: 'Active',
+      label: 'Активные',
       value: activeAlerts,
       icon: 'CheckCircle',
       color: 'text-success'
     },
     {
-      label: 'Triggered Today',
+      label: 'Сегодня',
       value: triggeredToday,
       icon: 'AlertTriangle',
       color: 'text-warning'
@@ -70,7 +70,7 @@ const AlertStatusIndicator = ({ totalAlerts, activeAlerts, triggeredToday }) => 
   return (
     <div className="bg-card border border-border rounded-lg p-4">
       {/* Connection Status */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-4">
         <div className="flex items-center space-x-2">
           <Icon 
             name={getConnectionIcon()} 
@@ -78,13 +78,13 @@ const AlertStatusIndicator = ({ totalAlerts, activeAlerts, triggeredToday }) => 
             className={`${getConnectionColor()} ${connectionStatus === 'reconnecting' ? 'animate-spin' : ''}`} 
           />
           <span className={`text-sm font-medium ${getConnectionColor()}`}>
-            {connectionStatus === 'connected' && 'Alert Monitoring Active'}
-            {connectionStatus === 'reconnecting' && 'Reconnecting...'}
-            {connectionStatus === 'disconnected' && 'Connection Lost'}
+            {connectionStatus === 'connected' && 'Мониторинг активен'}
+            {connectionStatus === 'reconnecting' && 'Переподключение...'}
+            {connectionStatus === 'disconnected' && 'Соединение потеряно'}
           </span>
         </div>
-        <span className="text-xs text-muted-foreground">
-          Updated {formatLastUpdate()}
+        <span className="text-xs text-muted-foreground flex-shrink-0">
+          Обновлено {formatLastUpdate()}
         </span>
       </div>
       {/* Stats Grid */}
@@ -106,10 +106,10 @@ const AlertStatusIndicator = ({ totalAlerts, activeAlerts, triggeredToday }) => 
       {/* Health Indicator */}
       <div className="mt-4 pt-4 border-t border-border">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">System Health</span>
+          <span className="text-sm text-muted-foreground">Состояние системы</span>
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-sm text-success">Operational</span>
+            <span className="text-sm text-success">Работает</span>
           </div>
         </div>
       </div>

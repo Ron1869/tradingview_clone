@@ -15,22 +15,22 @@ const AISettings = ({ settings, onSettingsChange }) => {
   };
 
   const reasoningOptions = [
-    { value: 'minimal', label: 'Быстрый (минимальное рассуждение)' },
-    { value: 'low', label: 'Легкий (быстрый анализ)' },
-    { value: 'medium', label: 'Средний (сбалансированный)' },
-    { value: 'high', label: 'Глубокий (детальный анализ)' }
+    { value: 'minimal', label: t('reasoningQuick') },
+    { value: 'low', label: t('reasoningLight') },
+    { value: 'medium', label: t('reasoningMedium') },
+    { value: 'high', label: t('reasoningDeep') }
   ];
 
   const analysisOptions = [
-    { value: 'technical', label: 'Технический анализ' },
-    { value: 'fundamental', label: 'Фундаментальный анализ' },
-    { value: 'hybrid', label: 'Комбинированный анализ' }
+    { value: 'technical', label: t('technicalAnalysis') },
+    { value: 'fundamental', label: t('fundamentalAnalysis') },
+    { value: 'hybrid', label: t('hybridAnalysis') }
   ];
 
   const verbosityOptions = [
-    { value: 'low', label: 'Краткие ответы' },
-    { value: 'medium', label: 'Средняя детализация' },
-    { value: 'high', label: 'Подробные ответы' }
+    { value: 'low', label: t('verbosityLow') },
+    { value: 'medium', label: t('verbosityMedium') },
+    { value: 'high', label: t('verbosityHigh') }
   ];
 
   return (
@@ -43,7 +43,7 @@ const AISettings = ({ settings, onSettingsChange }) => {
         {/* Reasoning Depth */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Глубина анализа
+            {t('reasoningDepth')}
           </label>
           <Select
             value={settings?.reasoningDepth}
@@ -56,14 +56,14 @@ const AISettings = ({ settings, onSettingsChange }) => {
             ))}
           </Select>
           <p className="text-xs text-muted-foreground mt-1">
-            Контролирует глубину рассуждений ИИ
+            {t('reasoningDepthTooltip')}
           </p>
         </div>
 
         {/* Analysis Type */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Тип анализа
+            {t('analysisType')}
           </label>
           <Select
             value={settings?.analysisType}
@@ -76,14 +76,14 @@ const AISettings = ({ settings, onSettingsChange }) => {
             ))}
           </Select>
           <p className="text-xs text-muted-foreground mt-1">
-            Фокус анализа рынка
+            {t('analysisTypeTooltip')}
           </p>
         </div>
 
         {/* Verbosity */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Детализация ответов
+            {t('verbosity')}
           </label>
           <Select
             value={settings?.verbosity}
@@ -96,7 +96,7 @@ const AISettings = ({ settings, onSettingsChange }) => {
             ))}
           </Select>
           <p className="text-xs text-muted-foreground mt-1">
-            Уровень детализации в ответах
+            {t('verbosityTooltip')}
           </p>
         </div>
 
@@ -106,10 +106,10 @@ const AISettings = ({ settings, onSettingsChange }) => {
             id="includeSentiment"
             checked={settings?.includeSentiment}
             onChange={(e) => updateSetting('includeSentiment', e?.target?.checked)}
-            label="Учитывать настроения рынка"
+            label={t('includeMarketSentiment')}
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Включает анализ новостей и социальных настроений
+            {t('includeMarketSentimentTooltip')}
           </p>
         </div>
       </div>
@@ -119,10 +119,10 @@ const AISettings = ({ settings, onSettingsChange }) => {
           <div className="flex items-start space-x-2">
             <Icon name="Info" size={14} className="text-primary mt-0.5" />
             <div className="text-xs text-muted-foreground">
-              <p className="font-medium text-foreground mb-1">Рекомендации:</p>
-              <p>• Используйте "Быстрый" для простых вопросов</p>
-              <p>• Выберите "Глубокий" для сложного анализа</p>
-              <p>• Комбинированный анализ дает лучшие результаты</p>
+              <p className="font-medium text-foreground mb-1">{t('recommendations')}</p>
+              <p>{t('recommendationsTip1')}</p>
+              <p>{t('recommendationsTip2')}</p>
+              <p>{t('recommendationsTip3')}</p>
             </div>
           </div>
         </div>

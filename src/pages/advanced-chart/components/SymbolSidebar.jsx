@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('watchlist');
   const [watchlist, setWatchlist] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [marketData, setMarketData] = useState({});
 
-  // Mock market data
   const mockSymbols = [
     { symbol: 'BTCUSD', name: 'Bitcoin', price: 45234.56, change: 2.34, changePercent: 5.45, volume: '2.1B', category: 'crypto' },
     { symbol: 'ETHUSD', name: 'Ethereum', price: 2847.23, change: -45.67, changePercent: -1.58, volume: '1.8B', category: 'crypto' },
@@ -27,11 +28,9 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
   ];
 
   useEffect(() => {
-    // Initialize watchlist with some default symbols
     const defaultWatchlist = ['BTCUSD', 'ETHUSD', 'AAPL', 'GOOGL', 'EURUSD'];
     setWatchlist(defaultWatchlist);
     
-    // Generate market data
     const data = {};
     mockSymbols?.forEach(symbol => {
       data[symbol.symbol] = symbol;
@@ -133,7 +132,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
               {formatChange(symbolData?.change, symbolData?.changePercent)}
             </div>
             <div className="text-xs text-muted-foreground">
-              Объем: {symbolData?.volume}
+              {t('volume')}: {symbolData?.volume}
             </div>
           </div>
         </div>
@@ -145,12 +144,12 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
     <div className="w-80 bg-card border-r border-border h-full flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-border">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Символы</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">{t('symbols')}</h2>
         
         {/* Search */}
         <Input
           type="search"
-          placeholder="Поиск символов..."
+          placeholder={t('searchSymbols')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e?.target?.value)}
           className="mb-4"
@@ -164,7 +163,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
               activeTab === 'watchlist' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Избранное
+            {t('favorites')}
           </button>
           <button
             onClick={() => setActiveTab('markets')}
@@ -172,7 +171,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
               activeTab === 'markets' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Рынки
+            {t('markets')}
           </button>
         </div>
       </div>
@@ -181,14 +180,14 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
         {searchQuery?.trim() ? (
           <div className="space-y-3">
             <h3 className="text-sm font-medium text-muted-foreground mb-3">
-              Результаты поиска ({searchResults?.length})
+              {t('searchResults')} ({searchResults?.length})
             </h3>
             {searchResults?.length > 0 ? (
               searchResults?.map(symbol => renderSymbolItem(symbol, true))
             ) : (
               <div className="text-center py-8">
                 <Icon name="Search" size={48} className="text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">Символы не найдены</p>
+                <p className="text-muted-foreground">{t('noSymbolsFound')}</p>
               </div>
             )}
           </div>
@@ -196,7 +195,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
           <div className="space-y-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-medium text-muted-foreground">
-                Избранные символы ({watchlist?.length})
+                {t('favoriteSymbols')} ({watchlist?.length})
               </h3>
               <Button variant="ghost" size="sm">
                 <Icon name="Settings" size={16} />
@@ -211,9 +210,9 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
             ) : (
               <div className="text-center py-8">
                 <Icon name="Star" size={48} className="text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground mb-2">Нет избранных символов</p>
+                <p className="text-muted-foreground mb-2">{t('noFavoriteSymbols')}</p>
                 <p className="text-xs text-muted-foreground">
-                  Добавьте символы в избранное для быстрого доступа
+                  {t('addFavoritesHint')}
                 </p>
               </div>
             )}
@@ -224,7 +223,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center">
                 <Icon name="Bitcoin" size={16} className="mr-2" />
-                Криптовалюты
+                {t('cryptocurrencies')}
               </h3>
               <div className="space-y-3">
                 {mockSymbols?.filter(s => s?.category === 'crypto')?.map(symbol => renderSymbolItem(symbol))}
@@ -235,7 +234,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center">
                 <Icon name="TrendingUp" size={16} className="mr-2" />
-                Акции
+                {t('stocks')}
               </h3>
               <div className="space-y-3">
                 {mockSymbols?.filter(s => s?.category === 'stocks')?.map(symbol => renderSymbolItem(symbol))}
@@ -246,7 +245,7 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center">
                 <Icon name="DollarSign" size={16} className="mr-2" />
-                Валютные пары
+                {t('forex')}
               </h3>
               <div className="space-y-3">
                 {mockSymbols?.filter(s => s?.category === 'forex')?.map(symbol => renderSymbolItem(symbol))}
@@ -258,10 +257,10 @@ const SymbolSidebar = ({ selectedSymbol, onSymbolChange, onWatchlistUpdate }) =>
       {/* Footer */}
       <div className="p-4 border-t border-border">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Обновлено: {new Date()?.toLocaleTimeString('ru-RU')}</span>
+          <span>{t('updatedLabel')} {new Date()?.toLocaleTimeString(t('locale'))}</span>
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Онлайн</span>
+            <span>{t('online')}</span>
           </div>
         </div>
       </div>

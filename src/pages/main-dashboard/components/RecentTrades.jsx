@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const RecentTrades = () => {
-  const [selectedTab, setSelectedTab] = useState('recent');
+  const { t } = useLanguage();
+  const [selectedTab, setSelectedTab] = useState('recent')
 
   const mockTradesData = {
     recent: [
@@ -107,6 +109,15 @@ const RecentTrades = () => {
 
   const currentData = mockTradesData?.[selectedTab];
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'filled': return t('filled');
+      case 'pending': return t('pending');
+      case 'cancelled': return t('cancelled');
+      default: return status;
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'filled': return 'text-success';
@@ -122,7 +133,7 @@ const RecentTrades = () => {
 
   const handleCancelOrder = (orderId) => {
     console.log('Cancelling order:', orderId);
-    alert('Order cancelled successfully!');
+    alert(t('alertOrderCancelled'));
   };
 
   return (
@@ -130,7 +141,7 @@ const RecentTrades = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">Trading Activity</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('tradingActivity')}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -142,8 +153,8 @@ const RecentTrades = () => {
         {/* Tabs */}
         <div className="flex space-x-1">
           {[
-            { key: 'recent', label: 'Recent Trades', icon: 'Activity' },
-            { key: 'orders', label: 'Open Orders', icon: 'Clock' }
+            { key: 'recent', label: t('recentTrades'), icon: 'Activity' },
+            { key: 'orders', label: t('openOrders'), icon: 'Clock' }
           ]?.map((tab) => (
             <button
               key={tab?.key}
@@ -163,12 +174,12 @@ const RecentTrades = () => {
       {/* Table Header */}
       <div className="px-4 py-2 border-b border-border bg-muted/30">
         <div className="grid grid-cols-6 gap-4 text-xs font-medium text-muted-foreground">
-          <span>Symbol</span>
-          <span>Side</span>
-          <span>Quantity</span>
-          <span>Price</span>
-          <span>Time</span>
-          <span>Status</span>
+          <span>{t('symbol')}</span>
+          <span>{t('side')}</span>
+          <span>{t('quantity')}</span>
+          <span>{t('price')}</span>
+          <span>{t('time')}</span>
+          <span>{t('status')}</span>
         </div>
       </div>
       {/* Table Content */}
@@ -199,7 +210,7 @@ const RecentTrades = () => {
                   className={getSideColor(item?.side)}
                 />
                 <span className={`text-sm font-medium ${getSideColor(item?.side)}`}>
-                  {item?.side?.toUpperCase()}
+                  {t(item?.side)}
                 </span>
               </div>
 
@@ -221,7 +232,7 @@ const RecentTrades = () => {
               {/* Status */}
               <div className="flex items-center justify-between">
                 <span className={`text-sm font-medium ${getStatusColor(item?.status)}`}>
-                  {item?.status?.toUpperCase()}
+                  {getStatusText(item?.status)}
                 </span>
                 
                 {selectedTab === 'orders' && item?.status === 'pending' && (
@@ -239,14 +250,14 @@ const RecentTrades = () => {
             {/* Additional Info for Recent Trades */}
             {selectedTab === 'recent' && (
               <div className="grid grid-cols-6 gap-4 mt-2 text-xs text-muted-foreground">
-                <span>Value: ${item?.value}</span>
-                <span>Fee: ${item?.fee}</span>
+                <span>{t('value')}: ${item?.value}</span>
+                <span>{t('fee')}: ${item?.fee}</span>
                 <span></span>
                 <span></span>
                 <span></span>
                 {item?.pnl && (
                   <span className={item?.pnl?.startsWith('+') ? 'text-success' : 'text-error'}>
-                    P&L: {item?.pnl}
+                    {t('pnl')}: {item?.pnl}
                   </span>
                 )}
               </div>
@@ -255,8 +266,8 @@ const RecentTrades = () => {
             {/* Additional Info for Orders */}
             {selectedTab === 'orders' && (
               <div className="grid grid-cols-6 gap-4 mt-2 text-xs text-muted-foreground">
-                <span>Type: {item?.type?.toUpperCase()}</span>
-                <span>Value: ${item?.value}</span>
+                <span>{t('type')}: {item?.type?.toUpperCase()}</span>
+                <span>{t('value')}: ${item?.value}</span>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -270,7 +281,7 @@ const RecentTrades = () => {
       <div className="p-4 border-t border-border">
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">
-            {selectedTab === 'recent' ? 'Last 24 hours' : `${currentData?.length} open orders`}
+            {selectedTab === 'recent' ? t('last24Hours') : `${currentData?.length} ${t('openOrdersCount')}`}
           </span>
           <Button
             variant="outline"
@@ -278,7 +289,7 @@ const RecentTrades = () => {
             iconName="MoreHorizontal"
             className="text-muted-foreground hover:text-foreground"
           >
-            View All
+            {t('viewAll')}
           </Button>
         </div>
       </div>

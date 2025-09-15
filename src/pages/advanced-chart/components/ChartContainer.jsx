@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDrawingModeChange }) => {
+  const { t } = useLanguage();
   const [chartData, setChartData] = useState([]);
   const [volumeData, setVolumeData] = useState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -17,7 +19,6 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
     const originalError = console.error;
     console.error = (...args) => {
       if (typeof args?.[0] === 'string' && args?.[0]?.includes('ResizeObserver loop completed with undelivered notifications')) {
-        // Suppress ResizeObserver loop error which is harmless in this context
         return;
       }
       originalError?.apply(console, args);
@@ -31,7 +32,6 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
     };
   }, []);
 
-  // Mock chart data generation with useCallback to prevent unnecessary re-renders
   const generateMockData = useCallback(() => {
     const data = [];
     const volumeData = [];
@@ -53,7 +53,7 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
       const timestamp = new Date(Date.now() - (timePoints - i) * (timeframe === '1m' ? 60000 : timeframe === '5m' ? 300000 : timeframe === '1h' ? 3600000 : 86400000));
       
       data?.push({
-        time: timestamp?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+        time: timestamp?.toLocaleTimeString(t('locale'), { hour: '2-digit', minute: '2-digit' }),
         timestamp: timestamp?.getTime(),
         open: parseFloat(open?.toFixed(2)),
         high: parseFloat(high?.toFixed(2)),
@@ -64,16 +64,15 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
       });
       
       volumeData?.push({
-        time: timestamp?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+        time: timestamp?.toLocaleTimeString(t('locale'), { hour: '2-digit', minute: '2-digit' }),
         volume: volume,
         color: close > open ? '#10B981' : '#EF4444'
       });
     }
     
     return { data, volumeData };
-  }, [selectedSymbol, timeframe]);
+  }, [selectedSymbol, timeframe, t]);
 
-  // Debounced data update to prevent rapid re-renders
   useEffect(() => {
     if (resizeTimeoutRef?.current) {
       clearTimeout(resizeTimeoutRef?.current);
@@ -109,7 +108,6 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
     }
   };
 
-  // Memoized tooltip components to prevent re-renders
   const CustomTooltip = useCallback(({ active, payload, label }) => {
     if (active && payload && payload?.length) {
       const data = payload?.[0]?.payload;
@@ -118,31 +116,31 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
           <p className="text-sm text-muted-foreground mb-2">{label}</p>
           <div className="space-y-1 text-sm">
             <div className="flex justify-between space-x-4">
-              <span className="text-muted-foreground">Открытие:</span>
+              <span className="text-muted-foreground">{t('tooltipOpen')}</span>
               <span className="text-foreground font-medium text-data">{data?.open}</span>
             </div>
             <div className="flex justify-between space-x-4">
-              <span className="text-muted-foreground">Максимум:</span>
+              <span className="text-muted-foreground">{t('tooltipHigh')}</span>
               <span className="text-foreground font-medium text-data">{data?.high}</span>
             </div>
             <div className="flex justify-between space-x-4">
-              <span className="text-muted-foreground">Минимум:</span>
+              <span className="text-muted-foreground">{t('tooltipLow')}</span>
               <span className="text-foreground font-medium text-data">{data?.low}</span>
             </div>
             <div className="flex justify-between space-x-4">
-              <span className="text-muted-foreground">Закрытие:</span>
+              <span className="text-muted-foreground">{t('tooltipClose')}</span>
               <span className="text-foreground font-medium text-data">{data?.close}</span>
             </div>
             <div className="flex justify-between space-x-4">
-              <span className="text-muted-foreground">Объем:</span>
-              <span className="text-foreground font-medium text-data">{data?.volume?.toLocaleString('ru-RU')}</span>
+              <span className="text-muted-foreground">{t('volume')}</span>
+              <span className="text-foreground font-medium text-data">{data?.volume?.toLocaleString(t('locale'))}</span>
             </div>
           </div>
         </div>
       );
     }
     return null;
-  }, []);
+  }, [t]);
 
   const VolumeTooltip = useCallback(({ active, payload, label }) => {
     if (active && payload && payload?.length) {
@@ -150,13 +148,26 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
         <div className="bg-card border border-border rounded-lg p-2 shadow-elevated">
           <p className="text-sm text-muted-foreground">{label}</p>
           <p className="text-sm font-medium text-data">
-            Объем: {payload?.[0]?.value?.toLocaleString('ru-RU')}
+            {t('volume')}: {payload?.[0]?.value?.toLocaleString(t('locale'))}
           </p>
         </div>
       );
     }
     return null;
-  }, []);
+  }, [t]);
+
+  const getChartTypeName = (type) => {
+    switch (type) {
+      case 'candlestick':
+        return t('chartTypeCandles');
+      case 'line':
+        return t('chartTypeLine');
+      case 'area':
+        return t('chartTypeArea');
+      default:
+        return type;
+    }
+  };
 
   return (
     <div className={`bg-card border border-border rounded-lg ${isFullscreen ? 'fixed inset-0 z-50' : 'h-full'}`}>
@@ -165,12 +176,12 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
         <div className="flex items-center space-x-4">
           <h3 className="text-lg font-semibold text-foreground">{selectedSymbol}</h3>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">Таймфрейм:</span>
+            <span className="text-sm text-muted-foreground">{t('timeframeLabel')}</span>
             <span className="text-sm font-medium text-foreground text-data">{timeframe}</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">Тип:</span>
-            <span className="text-sm font-medium text-foreground">{chartType === 'candlestick' ? 'Свечи' : chartType === 'line' ? 'Линия' : 'Область'}</span>
+            <span className="text-sm text-muted-foreground">{t('typeLabel')}</span>
+            <span className="text-sm font-medium text-foreground">{getChartTypeName(chartType)}</span>
           </div>
         </div>
         
@@ -224,7 +235,7 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
         </div>
       </div>
 
-      {/* Chart Area with error boundary */}
+      {/* Chart Area */}
       <div className={`${isFullscreen ? 'h-[calc(100vh-80px)]' : 'h-[500px]'} p-4`} ref={chartRef}>
         <div className="h-[70%] mb-4">
           {chartData?.length > 0 && (
@@ -345,16 +356,16 @@ const ChartContainer = ({ selectedSymbol, timeframe, chartType, indicators, onDr
       {/* Chart Status */}
       <div className="flex items-center justify-between px-4 py-2 border-t border-border text-sm">
         <div className="flex items-center space-x-4">
-          <span className="text-muted-foreground">Последнее обновление:</span>
-          <span className="text-foreground text-data">{new Date()?.toLocaleTimeString('ru-RU')}</span>
+          <span className="text-muted-foreground">{t('updatedLabel')}</span>
+          <span className="text-foreground text-data">{new Date()?.toLocaleTimeString(t('locale'))}</span>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-success text-xs">Подключено</span>
+            <span className="text-success text-xs">{t('connected')}</span>
           </div>
           <span className="text-muted-foreground">|</span>
-          <span className="text-muted-foreground">Задержка: 0мс</span>
+          <span className="text-muted-foreground">{t('latency')}</span>
         </div>
       </div>
     </div>

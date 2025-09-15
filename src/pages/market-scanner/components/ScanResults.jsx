@@ -97,24 +97,24 @@ const ScanResults = ({ results, onAddToWatchlist, onOpenChart, onExportResults }
         <thead>
           <tr className="border-b border-border">
             <th className="text-left py-3 px-4">
-              <SortButton field="symbol">Symbol</SortButton>
+              <SortButton field="symbol">Символ</SortButton>
             </th>
             <th className="text-right py-3 px-4">
-              <SortButton field="price">Price</SortButton>
+              <SortButton field="price">Цена</SortButton>
             </th>
             <th className="text-right py-3 px-4">
-              <SortButton field="change">Change</SortButton>
+              <SortButton field="change">Изм.</SortButton>
             </th>
             <th className="text-right py-3 px-4">
-              <SortButton field="volume">Volume</SortButton>
+              <SortButton field="volume">Объем</SortButton>
             </th>
             <th className="text-right py-3 px-4">
-              <SortButton field="marketCap">Market Cap</SortButton>
+              <SortButton field="marketCap">Кап.</SortButton>
             </th>
             <th className="text-right py-3 px-4">
               <SortButton field="rsi">RSI</SortButton>
             </th>
-            <th className="text-center py-3 px-4">Actions</th>
+            <th className="text-center py-3 px-4">Действия</th>
           </tr>
         </thead>
         <tbody>
@@ -132,7 +132,7 @@ const ScanResults = ({ results, onAddToWatchlist, onOpenChart, onExportResults }
                   </div>
                   {result?.isNew && (
                     <span className="px-2 py-1 text-xs bg-success text-success-foreground rounded">
-                      New
+                      Новый
                     </span>
                   )}
                 </div>
@@ -201,9 +201,9 @@ const ScanResults = ({ results, onAddToWatchlist, onOpenChart, onExportResults }
     <div className="bg-card border border-border rounded-lg">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Scan Results</h3>
+          <h3 className="text-lg font-semibold text-foreground">Результаты сканирования</h3>
           <p className="text-sm text-muted-foreground">
-            {results?.length} assets found • Last updated: {new Date()?.toLocaleTimeString()}
+            Найдено {results?.length} активов • Последнее обновление: {new Date()?.toLocaleTimeString('ru-RU')}
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -232,7 +232,7 @@ const ScanResults = ({ results, onAddToWatchlist, onOpenChart, onExportResults }
             iconName="Download"
             iconPosition="left"
           >
-            Export
+            Экспорт
           </Button>
         </div>
       </div>
@@ -240,9 +240,9 @@ const ScanResults = ({ results, onAddToWatchlist, onOpenChart, onExportResults }
         {results?.length === 0 ? (
           <div className="text-center py-12">
             <Icon name="Search" size={48} className="text-muted-foreground mx-auto mb-4" />
-            <h4 className="text-lg font-medium text-foreground mb-2">No Results Found</h4>
+            <h4 className="text-lg font-medium text-foreground mb-2">Ничего не найдено</h4>
             <p className="text-muted-foreground">
-              Try adjusting your filters or select a preset scan to get started.
+              Попробуйте изменить фильтры или выберите готовый скан, чтобы начать.
             </p>
           </div>
         ) : (

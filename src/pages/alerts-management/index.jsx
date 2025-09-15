@@ -133,9 +133,9 @@ const AlertsManagement = () => {
   };
 
   const tabs = [
-    { id: 'alerts', label: 'Active Alerts', icon: 'Bell' },
-    { id: 'history', label: 'History', icon: 'History' },
-    { id: 'templates', label: 'Templates', icon: 'BookOpen' }
+    { id: 'alerts', label: 'Активные уведомления', icon: 'Bell' },
+    { id: 'history', label: 'История', icon: 'History' },
+    { id: 'templates', label: 'Шаблоны', icon: 'BookOpen' }
   ];
 
   const activeAlerts = alerts?.filter(alert => alert?.status === 'active');
@@ -150,11 +150,11 @@ const AlertsManagement = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Page Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-y-4">
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Alerts Management</h1>
+                <h1 className="text-3xl font-bold text-foreground">Управление уведомлениями</h1>
                 <p className="text-muted-foreground mt-2">
-                  Create and manage price alerts, technical indicators, and trading notifications
+                  Создавайте и управляйте ценовыми оповещениями, техническими индикаторами и торговыми уведомлениями
                 </p>
               </div>
               
@@ -189,34 +189,34 @@ const AlertsManagement = () => {
                 
                 {/* Quick Actions */}
                 <div className="bg-card border border-border rounded-lg p-4">
-                  <h3 className="text-sm font-medium text-foreground mb-3">Quick Actions</h3>
+                  <h3 className="text-sm font-medium text-foreground mb-3">Быстрые действия</h3>
                   <div className="space-y-2">
                     <Button
                       variant="ghost"
                       size="sm"
                       iconName="Import"
                       iconPosition="left"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-left"
                     >
-                      Import Alerts
+                      <span className="truncate">Импорт уведомлений</span>
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       iconName="Download"
                       iconPosition="left"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-left"
                     >
-                      Export Alerts
+                      <span className="truncate">Экспорт уведомлений</span>
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       iconName="Settings"
                       iconPosition="left"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-left"
                     >
-                      Notification Settings
+                      <span className="truncate">Настройки уведомлений</span>
                     </Button>
                   </div>
                 </div>
@@ -226,19 +226,19 @@ const AlertsManagement = () => {
             {/* Right Column - Main Content */}
             <div className="lg:col-span-2">
               {/* Tab Navigation */}
-              <div className="flex space-x-1 mb-6 bg-muted/10 p-1 rounded-lg">
+              <div className="flex flex-wrap gap-1 mb-6 bg-muted/10 p-1 rounded-lg">
                 {tabs?.map((tab) => (
                   <button
                     key={tab?.id}
                     onClick={() => setActiveTab(tab?.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-smooth flex-1 justify-center ${
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-smooth flex-1 justify-center ${
                       activeTab === tab?.id
                         ? 'bg-background text-foreground shadow-sm'
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <Icon name={tab?.icon} size={16} />
-                    <span>{tab?.label}</span>
+                    <span className="text-center">{tab?.label}</span>
                   </button>
                 ))}
               </div>

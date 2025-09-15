@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const MetricsCards = () => {
+  const { t } = useLanguage();
   const [metrics, setMetrics] = useState({});
   const [marketStatus, setMarketStatus] = useState('open');
 
@@ -12,7 +14,7 @@ const MetricsCards = () => {
       changePercent: "+2.82%",
       isUp: true,
       icon: "Wallet",
-      label: "Account Balance",
+      label: t('accountBalance'),
       currency: "USDT"
     },
     dailyPnL: {
@@ -21,7 +23,7 @@ const MetricsCards = () => {
       changePercent: "+34.2%",
       isUp: true,
       icon: "TrendingUp",
-      label: "Daily P&L",
+      label: t('dailyPnL'),
       currency: "USDT"
     },
     totalPositions: {
@@ -30,7 +32,7 @@ const MetricsCards = () => {
       changePercent: "+20%",
       isUp: true,
       icon: "Briefcase",
-      label: "Open Positions",
+      label: t('openPositions'),
       currency: ""
     },
     marketCap: {
@@ -39,7 +41,7 @@ const MetricsCards = () => {
       changePercent: "+1.9%",
       isUp: true,
       icon: "Globe",
-      label: "Total Market Cap",
+      label: t('totalMarketCap'),
       currency: "USD"
     }
   };
@@ -47,7 +49,6 @@ const MetricsCards = () => {
   useEffect(() => {
     setMetrics(mockMetricsData);
     
-    // Simulate market status updates
     const statusInterval = setInterval(() => {
       const statuses = ['open', 'pre-market', 'closed'];
       const currentIndex = statuses?.indexOf(marketStatus);
@@ -56,34 +57,34 @@ const MetricsCards = () => {
     }, 10000);
 
     return () => clearInterval(statusInterval);
-  }, [marketStatus]);
+  }, [marketStatus, t]);
 
   const getMarketStatusInfo = () => {
     switch (marketStatus) {
       case 'open':
         return {
-          label: 'Market Open',
+          label: t('marketOpen'),
           color: 'text-success',
           bgColor: 'bg-success/10',
           icon: 'Circle'
         };
       case 'pre-market':
         return {
-          label: 'Pre-Market',
+          label: t('preMarket'),
           color: 'text-warning',
           bgColor: 'bg-warning/10',
           icon: 'Clock'
         };
       case 'closed':
         return {
-          label: 'Market Closed',
+          label: t('marketClosed'),
           color: 'text-error',
           bgColor: 'bg-error/10',
           icon: 'XCircle'
         };
       default:
         return {
-          label: 'Unknown',
+          label: t('unknown'),
           color: 'text-muted-foreground',
           bgColor: 'bg-muted',
           icon: 'HelpCircle'
@@ -103,11 +104,11 @@ const MetricsCards = () => {
           </div>
           <div className="flex items-center space-x-1">
             <div className={`w-2 h-2 rounded-full ${statusInfo?.color?.replace('text-', 'bg-')}`}></div>
-            <span className="text-xs text-muted-foreground">Live</span>
+            <span className="text-xs text-muted-foreground">{t('live')}</span>
           </div>
         </div>
         <div className="space-y-1">
-          <h3 className="text-sm font-medium text-muted-foreground">Market Status</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{t('marketStatus')}</h3>
           <div className={`text-lg font-bold ${statusInfo?.color}`}>
             {statusInfo?.label}
           </div>

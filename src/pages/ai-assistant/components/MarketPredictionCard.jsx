@@ -1,7 +1,10 @@
 import React from 'react';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import Icon from '../../../components/AppIcon';
 
 const MarketPredictionCard = ({ prediction }) => {
+  const { t } = useLanguage();
+
   const getDirectionIcon = (direction) => {
     switch (direction) {
       case 'bullish': return 'TrendingUp';
@@ -29,17 +32,17 @@ const MarketPredictionCard = ({ prediction }) => {
 
   const getDirectionLabel = (direction) => {
     switch (direction) {
-      case 'bullish': return 'Рост';
-      case 'bearish': return 'Падение';
-      default: return 'Нейтрально';
+      case 'bullish': return t('growth');
+      case 'bearish': return t('fall');
+      default: return t('neutral');
     }
   };
 
   const getRiskLabel = (riskLevel) => {
     switch (riskLevel) {
-      case 'low': return 'Низкий';
-      case 'medium': return 'Средний';
-      case 'high': return 'Высокий';
+      case 'low': return t('low');
+      case 'medium': return t('medium');
+      case 'high': return t('high');
       default: return riskLevel;
     }
   };
@@ -53,7 +56,7 @@ const MarketPredictionCard = ({ prediction }) => {
             <Icon name="TrendingUp" size={20} className="text-primary" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Прогноз по {prediction?.symbol}</h3>
+            <h3 className="font-semibold text-foreground">{t('predictionFor', { symbol: prediction?.symbol })}</h3>
             <p className="text-xs text-muted-foreground">{prediction?.timeframe}</p>
           </div>
         </div>
@@ -64,7 +67,7 @@ const MarketPredictionCard = ({ prediction }) => {
             <span className="font-medium">{getDirectionLabel(prediction?.direction)}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            {Math.round(prediction?.confidence * 100)}% уверенность
+            {t('confidencePercentage', { confidence: Math.round(prediction?.confidence * 100) })}
           </div>
         </div>
       </div>
@@ -75,7 +78,7 @@ const MarketPredictionCard = ({ prediction }) => {
       {/* Key Metrics */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Уровень риска</h4>
+          <h4 className="text-sm font-medium text-foreground">{t('riskLevel')}</h4>
           <div className={`text-sm font-medium ${getRiskColor(prediction?.risk_level)}`}>
             {getRiskLabel(prediction?.risk_level)}
           </div>
@@ -83,16 +86,16 @@ const MarketPredictionCard = ({ prediction }) => {
         
         {prediction?.targets && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-foreground">Цели</h4>
+            <h4 className="text-sm font-medium text-foreground">{t('targets')}</h4>
             <div className="text-sm text-muted-foreground">
               {prediction?.targets?.target_price && (
-                <div>Цель: ${prediction?.targets?.target_price?.toFixed(2)}</div>
+                <div>{t('targetPrice', { price: prediction?.targets?.target_price?.toFixed(2) })}</div>
               )}
               {prediction?.targets?.support && (
-                <div>Поддержка: ${prediction?.targets?.support?.toFixed(2)}</div>
+                <div>{t('supportPrice', { price: prediction?.targets?.support?.toFixed(2) })}</div>
               )}
               {prediction?.targets?.resistance && (
-                <div>Сопротивление: ${prediction?.targets?.resistance?.toFixed(2)}</div>
+                <div>{t('resistancePrice', { price: prediction?.targets?.resistance?.toFixed(2) })}</div>
               )}
             </div>
           </div>
@@ -103,7 +106,7 @@ const MarketPredictionCard = ({ prediction }) => {
         <div>
           <h4 className="text-sm font-medium text-foreground mb-2 flex items-center">
             <Icon name="Key" size={14} className="mr-1" />
-            Ключевые факторы
+            {t('keyFactors')}
           </h4>
           <div className="grid grid-cols-1 gap-2">
             {prediction?.key_factors?.map((factor, index) => (
@@ -117,7 +120,7 @@ const MarketPredictionCard = ({ prediction }) => {
       )}
       {/* Confidence Indicator */}
       <div className="flex items-center justify-between pt-2 border-t border-border">
-        <span className="text-xs text-muted-foreground">Достоверность прогноза</span>
+        <span className="text-xs text-muted-foreground">{t('predictionConfidence')}</span>
         <div className="flex items-center space-x-2">
           <div className="w-16 h-2 bg-muted rounded-full">
             <div 

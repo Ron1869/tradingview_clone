@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const MarketWatchlist = () => {
+  const { t } = useLanguage();
   const [watchlistData, setWatchlistData] = useState([]);
   const [selectedTab, setSelectedTab] = useState('favorites');
 
@@ -10,7 +12,7 @@ const MarketWatchlist = () => {
     favorites: [
       {
         symbol: "BTCUSDT",
-        name: "Bitcoin",
+        name: t('bitcoin'),
         price: "67,234.50",
         change: "+2.34",
         changePercent: "+3.61%",
@@ -20,7 +22,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "ETHUSDT", 
-        name: "Ethereum",
+        name: t('ethereum'),
         price: "3,456.78",
         change: "-45.23",
         changePercent: "-1.29%",
@@ -30,7 +32,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "ADAUSDT",
-        name: "Cardano", 
+        name: t('cardano'), 
         price: "0.4567",
         change: "+0.0234",
         changePercent: "+5.41%",
@@ -40,7 +42,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "SOLUSDT",
-        name: "Solana",
+        name: t('solana'),
         price: "145.67",
         change: "-3.45",
         changePercent: "-2.31%", 
@@ -50,7 +52,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "DOTUSDT",
-        name: "Polkadot",
+        name: t('polkadot'),
         price: "6.789",
         change: "+0.234",
         changePercent: "+3.57%",
@@ -62,7 +64,7 @@ const MarketWatchlist = () => {
     trending: [
       {
         symbol: "PEPEUSDT",
-        name: "Pepe",
+        name: t('pepe'),
         price: "0.00001234",
         change: "+0.00000456",
         changePercent: "+58.9%",
@@ -72,7 +74,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "SHIBUSDT",
-        name: "Shiba Inu",
+        name: t('shibaInu'),
         price: "0.00002456",
         change: "+0.00000789",
         changePercent: "+47.3%",
@@ -82,7 +84,7 @@ const MarketWatchlist = () => {
       },
       {
         symbol: "DOGEUSDT",
-        name: "Dogecoin",
+        name: t('dogecoin'),
         price: "0.1234",
         change: "+0.0234",
         changePercent: "+23.4%",
@@ -95,7 +97,7 @@ const MarketWatchlist = () => {
 
   useEffect(() => {
     setWatchlistData(mockWatchlistData?.[selectedTab]);
-  }, [selectedTab]);
+  }, [selectedTab, t]);
 
   const handleSymbolClick = (symbol) => {
     // Navigate to advanced chart with selected symbol
@@ -112,7 +114,7 @@ const MarketWatchlist = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">Watchlist</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('watchlist')}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -120,15 +122,15 @@ const MarketWatchlist = () => {
             onClick={handleAddToWatchlist}
             className="text-muted-foreground hover:text-foreground"
           >
-            Add
+            {t('add')}
           </Button>
         </div>
         
         {/* Tabs */}
         <div className="flex space-x-1">
           {[
-            { key: 'favorites', label: 'Favorites', icon: 'Star' },
-            { key: 'trending', label: 'Trending', icon: 'TrendingUp' }
+            { key: 'favorites', label: t('favorites'), icon: 'Star' },
+            { key: 'trending', label: t('trending'), icon: 'TrendingUp' }
           ]?.map((tab) => (
             <button
               key={tab?.key}
@@ -179,7 +181,7 @@ const MarketWatchlist = () => {
             </div>
             
             <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-              <span>Vol: {item?.volume}</span>
+              <span>{t('volume')}: {item?.volume}</span>
               <span className={item?.isUp ? 'text-success' : 'text-error'}>
                 {item?.isUp ? '+' : ''}{item?.change}
               </span>
@@ -197,7 +199,7 @@ const MarketWatchlist = () => {
           iconPosition="right"
           onClick={() => window.location.href = '/market-scanner'}
         >
-          View All Markets
+          {t('viewAllMarkets')}
         </Button>
       </div>
     </div>

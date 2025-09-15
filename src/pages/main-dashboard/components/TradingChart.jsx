@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const TradingChart = () => {
+  const { t } = useLanguage();
   const [selectedSymbol, setSelectedSymbol] = useState('BTCUSDT');
   const [selectedTimeframe, setSelectedTimeframe] = useState('1h');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -225,7 +226,7 @@ const TradingChart = () => {
               iconName="TrendingUp"
               className="text-muted-foreground hover:text-foreground"
             >
-              Indicators
+              {t('indicators')}
             </Button>
             <Button
               variant="ghost"
@@ -233,7 +234,7 @@ const TradingChart = () => {
               iconName="PenTool"
               className="text-muted-foreground hover:text-foreground"
             >
-              Draw
+              {t('draw')}
             </Button>
             <Button
               variant="ghost"
@@ -241,16 +242,16 @@ const TradingChart = () => {
               iconName="Camera"
               className="text-muted-foreground hover:text-foreground"
             >
-              Screenshot
+              {t('screenshot')}
             </Button>
           </div>
           
           <div className="flex items-center space-x-2">
             <span className="text-xs text-muted-foreground">
-              Vol: {chartData?.length > 0 ? chartData?.[chartData?.length - 1]?.volume?.toLocaleString() : '0'}
+              {t('volume')}: {chartData?.length > 0 ? chartData?.[chartData?.length - 1]?.volume?.toLocaleString() : '0'}
             </span>
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-xs text-success">Live</span>
+            <span className="text-xs text-success">{t('live')}</span>
           </div>
         </div>
       </div>

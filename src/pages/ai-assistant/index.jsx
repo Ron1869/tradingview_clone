@@ -9,7 +9,6 @@ import ChatMessage from './components/ChatMessage';
 import AISettings from './components/AISettings';
 import QuickActions from './components/QuickActions';
 
-
 const AIAssistant = () => {
   const { t } = useLanguage();
   const [messages, setMessages] = useState([]);
@@ -26,13 +25,11 @@ const AIAssistant = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Welcome message
   useEffect(() => {
     const welcomeMessage = {
       id: Date.now(),
       type: 'ai',
-      content: t('currentLanguage') === 'ru' 
-        ? 'Привет! Я ваш ИИ-помощник для анализа рынка. Задавайте вопросы о торговле, анализе акций или используйте быстрые действия ниже.' :'Hello! I\'m your AI market analysis assistant. Ask me about trading, stock analysis, or use the quick actions below.',
+      content: t('aiWelcomeMessage'),
       timestamp: new Date()?.toISOString(),
     };
     setMessages([welcomeMessage]);
@@ -84,8 +81,7 @@ const AIAssistant = () => {
       const errorMessage = {
         id: Date.now() + 1,
         type: 'ai',
-        content: t('currentLanguage') === 'ru' 
-          ? 'Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте еще раз.' :'Sorry, there was an error processing your request. Please try again.',
+        content: t('aiErrorMessage'),
         isError: true,
         timestamp: new Date()?.toISOString(),
       };
@@ -96,9 +92,7 @@ const AIAssistant = () => {
   };
 
   const handleMarketPrediction = async (symbol) => {
-    const predictionMessage = t('currentLanguage') === 'ru' 
-      ? `Проанализируй ${symbol} и предскажи движение цены`
-      : `Analyze ${symbol} and predict price movement`;
+    const predictionMessage = t('aiAnalyzeAndPredict', { symbol });
 
     setIsLoading(true);
     
@@ -151,8 +145,7 @@ const AIAssistant = () => {
     setMessages([{
       id: Date.now(),
       type: 'ai',
-      content: t('currentLanguage') === 'ru' 
-        ? 'Чат очищен. Как могу помочь с анализом рынка?' :'Chat cleared. How can I help with market analysis?',
+      content: t('aiChatCleared'),
       timestamp: new Date()?.toISOString(),
     }]);
   };
@@ -172,9 +165,7 @@ const AIAssistant = () => {
                 <span>{t('aiAssistant')}</span>
               </h1>
               <p className="text-muted-foreground mt-2">
-                {t('currentLanguage') === 'ru' 
-                  ? 'Интеллектуальный анализ рынка и торговые рекомендации' :'Intelligent market analysis and trading recommendations'
-                }
+                {t('aiIntelligentAnalysis')}
               </p>
             </div>
             
@@ -185,7 +176,7 @@ const AIAssistant = () => {
                 disabled={isLoading}
               >
                 <Icon name="RotateCcw" size={16} className="mr-2" />
-                {t('currentLanguage') === 'ru' ? 'Очистить' : 'Clear'}
+                {t('clear')}
               </Button>
               
               <Button
@@ -278,7 +269,7 @@ const AIAssistant = () => {
               <div className="bg-card border border-border rounded-lg p-4">
                 <h3 className="font-semibold text-foreground mb-3 flex items-center">
                   <Icon name="TrendingUp" size={16} className="mr-2" />
-                  {t('currentLanguage') === 'ru' ? 'Обзор рынка' : 'Market Overview'}
+                  {t('marketOverview')}
                 </h3>
                 
                 <div className="space-y-3 text-sm">

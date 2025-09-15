@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 const MarketDepth = ({ selectedSymbol, currentPrice }) => {
+  const { t } = useLanguage();
   const [orderBook, setOrderBook] = useState({ bids: [], asks: [] });
   const [recentTrades, setRecentTrades] = useState([]);
   const [activeTab, setActiveTab] = useState('depth');
   const [depthLevel, setDepthLevel] = useState(10);
 
-  // Mock order book and trades data
   useEffect(() => {
     const generateOrderBook = () => {
       const basePrice = currentPrice || 45000;
       const bids = [];
       const asks = [];
       
-      // Generate bids (buy orders) - below current price
       for (let i = 0; i < 20; i++) {
         const price = basePrice - (i + 1) * (basePrice * 0.0001);
         const size = Math.random() * 10 + 0.1;
@@ -28,7 +28,6 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
         });
       }
       
-      // Generate asks (sell orders) - above current price
       for (let i = 0; i < 20; i++) {
         const price = basePrice + (i + 1) * (basePrice * 0.0001);
         const size = Math.random() * 10 + 0.1;
@@ -70,7 +69,6 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
     setOrderBook(generateOrderBook());
     setRecentTrades(generateRecentTrades());
 
-    // Update data every 2 seconds
     const interval = setInterval(() => {
       setOrderBook(generateOrderBook());
       setRecentTrades(generateRecentTrades());
@@ -88,7 +86,7 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
   };
 
   const formatTime = (timestamp) => {
-    return timestamp?.toLocaleTimeString('ru-RU', {
+    return timestamp?.toLocaleTimeString(t('locale'), {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit'
@@ -120,9 +118,9 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Стакан заявок</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('orderBook')}</h3>
           <div className="flex items-center space-x-2">
-            <span className="text-xs text-muted-foreground">Спред:</span>
+            <span className="text-xs text-muted-foreground">{t('spreadLabel')}</span>
             <span className="text-xs font-medium text-foreground text-data">
               {formatPrice(spread)} ({spreadPercent?.toFixed(3)}%)
             </span>
@@ -137,7 +135,7 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
               activeTab === 'depth' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Стакан
+            {t('depth')}
           </button>
           <button
             onClick={() => setActiveTab('trades')}
@@ -145,7 +143,7 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
               activeTab === 'trades' ?'bg-background text-foreground shadow-sm' :'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Сделки
+            {t('trades')}
           </button>
         </div>
       </div>
@@ -156,7 +154,7 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
             {/* Depth Controls */}
             <div className="p-3 border-b border-border">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">Глубина:</span>
+                <span className="text-xs text-muted-foreground">{t('depthLabel')}</span>
                 <div className="flex space-x-1">
                   {[5, 10, 20]?.map((level) => (
                     <Button
@@ -176,10 +174,10 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
             {/* Order Book Header */}
             <div className="px-3 py-2 border-b border-border">
               <div className="grid grid-cols-4 gap-2 text-xs font-medium text-muted-foreground">
-                <div className="text-left">Цена</div>
-                <div className="text-right">Размер</div>
-                <div className="text-right">Сумма</div>
-                <div className="text-right">Кол-во</div>
+                <div className="text-left">{t('price')}</div>
+                <div className="text-right">{t('size')}</div>
+                <div className="text-right">{t('total')}</div>
+                <div className="text-right">{t('count')}</div>
               </div>
             </div>
 
@@ -212,7 +210,7 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
                   <Icon name="TrendingUp" size={16} className="ml-2 text-success" />
                 </div>
                 <div className="text-center text-xs text-muted-foreground mt-1">
-                  Последняя цена
+                  {t('lastPrice')}
                 </div>
               </div>
 
@@ -241,10 +239,10 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
             {/* Trades Header */}
             <div className="px-3 py-2 border-b border-border">
               <div className="grid grid-cols-4 gap-2 text-xs font-medium text-muted-foreground">
-                <div className="text-left">Время</div>
-                <div className="text-right">Цена</div>
-                <div className="text-right">Размер</div>
-                <div className="text-right">Сумма</div>
+                <div className="text-left">{t('time')}</div>
+                <div className="text-right">{t('price')}</div>
+                <div className="text-right">{t('size')}</div>
+                <div className="text-right">{t('total')}</div>
               </div>
             </div>
 
@@ -274,10 +272,10 @@ const MarketDepth = ({ selectedSymbol, currentPrice }) => {
       {/* Footer */}
       <div className="p-3 border-t border-border">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Обновлено: {new Date()?.toLocaleTimeString('ru-RU')}</span>
+          <span>{t('updatedLabel')} {new Date()?.toLocaleTimeString(t('locale'))}</span>
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Реальное время</span>
+            <span>{t('realTime')}</span>
           </div>
         </div>
       </div>

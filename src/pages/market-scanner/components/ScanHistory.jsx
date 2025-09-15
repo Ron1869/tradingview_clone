@@ -6,7 +6,7 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const formatDate = (timestamp) => {
-    return new Date(timestamp)?.toLocaleString('en-US', {
+    return new Date(timestamp)?.toLocaleString('ru-RU', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -24,9 +24,9 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
     <div className="bg-card border border-border rounded-lg">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Scan History</h3>
+          <h3 className="text-lg font-semibold text-foreground">История сканирования</h3>
           <p className="text-sm text-muted-foreground">
-            Track performance of previous scans
+            Отслеживайте эффективность предыдущих сканирований
           </p>
         </div>
         <Button
@@ -42,7 +42,7 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
           {history?.length === 0 ? (
             <div className="text-center py-8">
               <Icon name="History" size={32} className="text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">No scan history available</p>
+              <p className="text-muted-foreground">История сканирования недоступна</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -62,11 +62,11 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
                             {formatDate(scan?.timestamp)}
                           </span>
                           <span className="text-xs text-muted-foreground">
-                            {scan?.resultsCount} results
+                            {scan?.resultsCount} результатов
                           </span>
                           {scan?.avgPerformance !== undefined && (
                             <span className={`text-xs font-medium ${getPerformanceColor(scan?.avgPerformance)}`}>
-                              Avg: {scan?.avgPerformance > 0 ? '+' : ''}{scan?.avgPerformance?.toFixed(2)}%
+                              Средн.: {scan?.avgPerformance > 0 ? '+' : ''}{scan?.avgPerformance?.toFixed(2)}%
                             </span>
                           )}
                         </div>
@@ -79,7 +79,7 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
                           className="h-8 px-3"
                         >
                           <Icon name="RotateCcw" size={14} />
-                          <span className="ml-1 text-xs">Load</span>
+                          <span className="ml-1 text-xs">Загрузить</span>
                         </Button>
                         <Button
                           variant="ghost"
@@ -101,9 +101,9 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
             <div className="mt-4 p-3 bg-muted rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-foreground">
-                  <span className="font-medium">Performance Tracking:</span>
+                  <span className="font-medium">Отслеживание эффективности:</span>
                   <span className="text-muted-foreground ml-2">
-                    Based on 1-week price changes after scan date
+                    На основе изменений цен за 1 неделю после даты сканирования
                   </span>
                 </div>
                 <Button
@@ -112,7 +112,7 @@ const ScanHistory = ({ history, onLoadHistoricalScan, onDeleteScan }) => {
                   iconName="BarChart3"
                   iconPosition="left"
                 >
-                  View Analytics
+                  Посмотреть аналитику
                 </Button>
               </div>
             </div>

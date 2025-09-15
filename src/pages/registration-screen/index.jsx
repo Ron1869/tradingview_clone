@@ -7,7 +7,6 @@ import { Checkbox } from '../../components/ui/Checkbox';
 import Icon from '../../components/AppIcon';
 import RegistrationSteps from './components/RegistrationSteps';
 import SocialLoginButtons from './components/SocialLoginButtons';
-import LanguageSelector from './components/LanguageSelector';
 
 const RegistrationScreen = () => {
   const { t } = useLanguage();
@@ -369,8 +368,6 @@ const RegistrationScreen = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted flex items-center justify-center p-4">
-      {/* Language Selector */}
-      <LanguageSelector />
       
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl shadow-elevated p-8">
